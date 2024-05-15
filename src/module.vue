@@ -12,7 +12,7 @@ const show_header = ref(false);
 const show_info = ref(false);
 const allow_server_selection = ref(false);
 
-const nav_active_item_marker = ref("colored-block");
+const nav_active_item_marker = ref("left-bar");
 const nav_active_items_marker = ref(["left-bar", "colored-block"]);
 
 const show_method_in_nav_bar = ref("as-colored-block");
