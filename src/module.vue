@@ -23,7 +23,7 @@ const show_methods_in_nav_bar = ref([
   "as-colored-block",
 ]);
 
-const display_mode = ref("read".toLowerCase());
+const display_mode = ref("focused");
 const display_modes = ref(["view", "read", "focused"]);
 
 const persist_auth = ref(false);
