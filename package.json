@@ -1,6 +1,6 @@
 {
   "name": "directus-extension-rapidocus",
-  "description": "Rapidoc + Directus = Rapidocus",
+  "description": "View interactive API documentation from OpenAPI Specification of your Directus and customize the appearance.",
   "icon": "temp_preferences_eco",
   "version": "1.0.0",
   "keywords": [
