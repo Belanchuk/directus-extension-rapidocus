@@ -2,13 +2,15 @@
 
 Rapidoc + Directus = Rapidocus
 
-The extension allows you to view interactive API documentation from OpenAPI Specification of your Directus and customize the appearance.
+View interactive API documentation from OpenAPI Specification of your Directus and customize the appearance.
 
 ## Settings
 
-1. Display mode: view | read | focused
-2. Show method in navbar: false | as-plain-text | as-colored-text | as-colored-block
-3. Navbar active item: left-bar | colored-block
+1. Display mode: view | read | **focused**\*
+2. Show method in navbar: false | as-plain-text | as-colored-text | **as-colored-block**\*
+3. Navbar active item: **left-bar**\* | colored-block
+
+\* default value
 
 ## TODO
 
