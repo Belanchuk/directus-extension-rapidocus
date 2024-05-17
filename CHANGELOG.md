@@ -1,3 +1,20 @@
+### 1.1.0
+
+Added settings:
+
+- Allow try
+- Show header
+- Allow spec url load
+- Allow spec file load
+- Show info
+- Allow server selection
+- Allow authentication
+- Persist auth
+- Allow search
+- Allow advanced search
+- Font spacing
+- Font size
+
 ### 1.0.1
 
 Changed default display mode to focused.

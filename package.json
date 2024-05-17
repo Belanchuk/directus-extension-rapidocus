@@ -2,7 +2,7 @@
   "name": "directus-extension-rapidocus",
   "description": "View any OpenAPI Specification in your Directus and customize the appearance.",
   "icon": "temp_preferences_eco",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "keywords": [
     "openapi",
     "rapidoc",
