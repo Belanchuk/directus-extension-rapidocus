@@ -2,13 +2,33 @@
 
 Rapidoc + Directus = Rapidocus
 
-View interactive API documentation from OpenAPI Specification of your Directus and customize the appearance.
+View any OpenAPI Specification in your Directus and customize the appearance.
 
 ## Settings
 
-1. Display mode: view | read | **focused**\*
-2. Show method in navbar: false | as-plain-text | as-colored-text | **as-colored-block**\*
-3. Navbar active item: **left-bar**\* | colored-block
+### General
+
+- Display mode: view | read | **focused**\*
+- Allow try: **true**\* | false
+
+### Header
+
+- Show header: **true**\* | false
+- Allow spec url load: true | **false**\*
+- Allow spec file load: true | **false**\*
+
+### Navigation
+
+- Show method in navbar: false | as-plain-text | as-colored-text | **as-colored-block**\*
+- Navbar active item: **left-bar**\* | colored-block
+- Show info: true | **false**\*
+- Allow server selection: true | **false**\*
+- Allow authentication: true | **false**\*
+- Persist auth: true | **false**\*
+- Allow search: **true**\* | false
+- Allow advanced search: **true**\* | false
+- Font spacing: compact | **default**\* | relaxed
+- Font size: **default**\* | large | largest
 
 \* default value
 
@@ -17,19 +37,22 @@ View interactive API documentation from OpenAPI Specification of your Directus a
 1. Add saving settings.
 2. Add some settings from the documentation: https://rapidocweb.com/api.html
 3. Add saving external OpenAPIs and switching between them.
+4. Add Api Viewer Module Compatibility.
 
 ## Installation
 
 1. Find this module on your Directus Marketplace and install it.
-2. Go to Settings -> Project Settings, in the Modules section, enable module Rapidocus.
-3. Reload the page.
-4. Go to Rapidocus in left menu.
+2. If Api Viewer Module is installed, disable it first.
+3. Go to Settings -> Project Settings, in the Modules section, enable module Rapidocus.
+4. Reload the page.
+5. Go to Rapidocus in left menu.
 
 ## Note
 
 1. Access to your Directus methods is determined by the current user's access settings.
 2. No need to add an access_token.
 3. Sandbox enabled, doesn't request scopes.
+4. Incompatible with the Api Viewer Module.
 
 ## Shoutout
 
