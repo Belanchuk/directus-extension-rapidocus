@@ -15,11 +15,6 @@ const display_mode = ref("focused");
 const display_modes = ref(["view", "read", "focused"]);
 const allow_try = ref(true);
 
-// Header
-const show_header = ref(true);
-const allow_spec_url_load = ref(false);
-const allow_spec_file_load = ref(false);
-
 // Navigation
 const allow_search = ref(true);
 const allow_advanced_search = ref(true);
@@ -96,10 +91,10 @@ const colors = computed(() => {
       style="height: calc(100% - 60px); width: 100%"
       :render-style="display_mode"
       :theme="mode"
-      :show-header="show_header"
+      show-header="false"
+      allow-spec-file-load="false"
+      allow-spec-url-load="false"
       :show-info="show_info"
-      :allow-spec-file-load="allow_spec_file_load"
-      :allow-spec-url-load="allow_spec_url_load"
       :allow-server-selection="allow_server_selection"
       :allow-authentication="allow_authentication"
       :allow-search="allow_search"
@@ -142,17 +137,6 @@ const colors = computed(() => {
           </div>
         </div>
         <v-checkbox v-model="allow_try">allow_try</v-checkbox>
-      </sidebar-detail>
-      <sidebar-detail icon="top_panel_close" title="Header">
-        <div class="layout-options">
-          <v-checkbox v-model="show_header">Show header</v-checkbox>
-          <v-checkbox v-model="allow_spec_url_load"
-            >Allow spec url load</v-checkbox
-          >
-          <v-checkbox v-model="allow_spec_file_load"
-            >Allow spec file load</v-checkbox
-          >
-        </div>
       </sidebar-detail>
       <sidebar-detail icon="left_panel_close" title="Navigation">
         <div class="layout-options">

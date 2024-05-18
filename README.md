@@ -11,12 +11,6 @@ View any OpenAPI Specification in your Directus and customize the appearance.
 - Display mode: view | read | **focused**\*
 - Allow try: **true**\* | false
 
-### Header
-
-- Show header: **true**\* | false
-- Allow spec url load: true | **false**\*
-- Allow spec file load: true | **false**\*
-
 ### Navigation
 
 - Show method in navbar: false | as-plain-text | as-colored-text | **as-colored-block**\*
