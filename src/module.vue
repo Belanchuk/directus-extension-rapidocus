@@ -6,7 +6,8 @@ import { computed, onMounted, ref, watch } from "vue";
 const api = useApi();
 
 const rapidoc = ref(null);
-const rapidocus_schema = ref("");
+const schema = ref("");
+const url = ref("");
 var timer;
 
 // General
@@ -42,14 +43,18 @@ const show_methods_in_nav_bar = ref([
 //
 
 onMounted(async () => {
+  url.value = location.origin + "/server/specs/oas";
   const { data } = await api.get("/server/specs/oas");
-  rapidocus_schema.value = data;
+  schema.value = data;
 });
 
-watch(rapidocus_schema, (schema) => {
+const loadSpec = async () => {
+  rapidoc.value.loadSpec(url.value);
+};
+
+watch(schema, (schema) => {
   clearTimeout(timer);
   timer = setTimeout(() => {
-    schema.servers[0].url = location.origin;
     rapidoc.value.loadSpec(schema);
   }, 100);
 });
@@ -86,9 +91,9 @@ const colors = computed(() => {
 <template>
   <private-view title="Rapidocus" small-header class="api-rapidocus">
     <rapi-doc
-      v-if="rapidocus_schema"
+      v-if="schema"
       ref="rapidoc"
-      style="height: 100%; width: 100%"
+      style="height: calc(100% - 60px); width: 100%"
       :render-style="display_mode"
       :theme="mode"
       :show-header="show_header"
@@ -112,14 +117,21 @@ const colors = computed(() => {
       :persist-auth="persist_auth"
       allow-schema-description-expand-toggle="true"
     >
-      <div slot="header"></div>
-      <div slot="logo" class="">
-        <div class="flex title h48 pl20">
-          <h1 class="type-title center">Rapidocus</h1>
-        </div>
-      </div>
-      <div slot="nav-logo"></div>
     </rapi-doc>
+
+    <template #actions:prepend>
+      <v-input v-model="url" small placeholder="Paste OpenAPI Spec url" />
+      <v-button
+        class="pl20"
+        secondary
+        icon
+        small
+        @click="loadSpec"
+        v-tooltip.bottom="'Get OpenAPI Spec'"
+      >
+        <v-icon name="download" />
+      </v-button>
+    </template>
 
     <template #sidebar>
       <sidebar-detail icon="settings" title="General settings" close>
@@ -203,9 +215,6 @@ const colors = computed(() => {
   padding-left: 20px;
 }
 .api-rapidocus #navigation .module-nav {
-  display: none !important;
-}
-.api-rapidocus .header-bar {
   display: none !important;
 }
 </style>
