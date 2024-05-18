@@ -115,7 +115,11 @@ const colors = computed(() => {
     </rapi-doc>
 
     <template #actions:prepend>
-      <v-input v-model="url" small placeholder="Paste OpenAPI Spec url" />
+      <v-input
+        v-model="url"
+        placeholder="Paste OpenAPI Spec url in json or yaml format."
+        small
+      />
       <v-button
         class="pl20"
         secondary
