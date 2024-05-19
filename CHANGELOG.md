@@ -1,3 +1,7 @@
+### 1.3.0
+
+Added saving and deleting urls to OpenApi Spec
+
 ### 1.2.0
 
 Changed rapidoc header on directus header
