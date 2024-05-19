@@ -1,3 +1,11 @@
+### 1.3.2
+
+Added use_path_in_nav_bar setting
+
+### 1.3.1
+
+Some changed README.md
+
 ### 1.3.0
 
 Added saving and deleting urls to OpenApi Spec
