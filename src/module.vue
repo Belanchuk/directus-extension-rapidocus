@@ -35,6 +35,10 @@ const item_spacing = useLocalStorage("rapidocus_item_spacing", "default");
 const item_spacings = ref(["compact", "default", "relaxed"]);
 const font_size = useLocalStorage("rapidocus_font_size", "default");
 const font_sizes = ref(["default", "large", "largest"]);
+const use_path_in_nav_bar = useLocalStorage(
+  "rapidocus_use_path_in_nav_bar",
+  false
+);
 const nav_active_item_marker = useLocalStorage(
   "rapidocus_nav_active_item_marker",
   "left-bar"
@@ -146,6 +150,7 @@ const colors = computed(() => {
       :nav-text-color="colors.navText"
       :persist-auth="persist_auth"
       :sort-endpoints-by="sort_endpoints"
+      :use-path-in-nav-bar="use_path_in_nav_bar"
       allow-schema-description-expand-toggle="false"
     >
     </rapi-doc>
@@ -351,6 +356,19 @@ const colors = computed(() => {
               name="help"
               v-tooltip.left="
                 `Provides advanced search functionality, to search through API-paths, API-description, API-parameters and API-Responses.`
+              "
+            ></v-icon>
+          </div>
+
+          <div class="flex center">
+            <v-checkbox v-model="use_path_in_nav_bar"
+              >Use path in navbar</v-checkbox
+            >
+            <v-icon
+              class="small pl5"
+              name="help"
+              v-tooltip.left="
+                `Set true to show API paths in the navigation bar instead of summary/description`
               "
             ></v-icon>
           </div>
