@@ -28,8 +28,7 @@ View any OpenAPI Specification in your Directus and customize the appearance.
 
 ## TODO
 
-1. Add saving external OpenAPIs and switching between them.
-2. Add Api Viewer Module Compatibility.
+1. Add Api Viewer Module Compatibility.
 
 ## Installation
 
