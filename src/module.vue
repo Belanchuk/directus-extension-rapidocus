@@ -1,14 +1,12 @@
 <script setup>
 import "rapidoc";
 import useLocalStorage from "./useLocalStorage";
-import { useApi } from "@directus/extensions-sdk";
 import { computed, onMounted, ref, watch } from "vue";
 
-const api = useApi();
-
 const rapidoc = ref(null);
-const schema = ref("");
-const url = ref("");
+const key = "rapidocus_api_urls";
+const url = ref(`${location.origin}/server/specs/oas`);
+const urls = useLocalStorage("rapidocus_api_urls", url.value);
 var timer;
 
 // General
@@ -57,21 +55,40 @@ const show_methods_in_nav_bar = ref([
 //
 
 onMounted(async () => {
-  url.value = location.origin + "/server/specs/oas";
-  const { data } = await api.get("/server/specs/oas");
-  schema.value = data;
+  clearTimeout(timer);
+  timer = setTimeout(() => {
+    rapidoc.value.loadSpec(url.value);
+  }, 50);
+  var value = localStorage.getItem(key);
+  if (!value) {
+    localStorage.setItem(key, JSON.stringify([url.value]));
+  }
 });
 
 const loadSpec = async () => {
-  rapidoc.value.loadSpec(url.value);
+  await rapidoc.value.loadSpec(url.value);
+  var old_value = localStorage.getItem(key);
+  const new_value = JSON.parse(old_value);
+  if (!new_value.includes(url.value)) {
+    new_value.push(url.value);
+    localStorage.setItem(key, JSON.stringify(new_value));
+  }
 };
 
-watch(schema, (schema) => {
-  clearTimeout(timer);
-  timer = setTimeout(() => {
-    rapidoc.value.loadSpec(schema);
-  }, 100);
-});
+const setUrl = (args) => {
+  url.value = args.target.textContent;
+};
+
+const removeUrl = (args) => {
+  const value = JSON.parse(localStorage.getItem(key));
+  const new_value = value.filter(
+    (url) =>
+      url !==
+      args.target.parentElement.parentElement.previousSibling.textContent
+  );
+  urls.value = JSON.stringify(new_value);
+  localStorage.setItem(key, JSON.stringify(new_value));
+};
 
 const colorScheme = window.matchMedia("(prefers-color-scheme: dark)");
 colorScheme.addEventListener("change", (event) => {
@@ -105,7 +122,6 @@ const colors = computed(() => {
 <template>
   <private-view title="Rapidocus" small-header class="api-rapidocus">
     <rapi-doc
-      v-if="schema"
       ref="rapidoc"
       style="height: calc(100% - 60px); width: 100%"
       :render-style="display_mode"
@@ -135,11 +151,27 @@ const colors = computed(() => {
     </rapi-doc>
 
     <template #actions:prepend>
-      <v-input
-        v-model="url"
-        placeholder="Paste OpenAPI Spec url in json or yaml format."
-        small
-      />
+      <v-menu placement="bottom-end" show-arrow toggle>
+        <template #activator="{ toggle }">
+          <v-input
+            @click="toggle"
+            v-model="url"
+            placeholder="Paste OpenAPI Spec url in json or yaml format."
+            small
+          />
+        </template>
+        <v-list>
+          <template v-for="url in urls" :key="index">
+            <v-list-item clickable @click="setUrl">
+              <v-list-item-content>{{ url }}</v-list-item-content>
+              <v-list-item-icon @click.stop="removeUrl">
+                <v-icon name="delete" />
+              </v-list-item-icon>
+            </v-list-item>
+          </template>
+        </v-list>
+      </v-menu>
+
       <v-button
         class="pl20"
         secondary
