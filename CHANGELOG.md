@@ -1,3 +1,9 @@
+### 1.2.0
+
+Changed rapidoc header on directus header
+Added saving settings
+Added help for settings
+
 ### 1.1.0
 
 Added settings:
