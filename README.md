@@ -28,15 +28,13 @@ View any OpenAPI Specification in your Directus and customize the appearance.
 
 ## TODO
 
-1. Add saving settings.
-2. Add some settings from the documentation: https://rapidocweb.com/api.html
-3. Add saving external OpenAPIs and switching between them.
-4. Add Api Viewer Module Compatibility.
+1. Add saving external OpenAPIs and switching between them.
+2. Add Api Viewer Module Compatibility.
 
 ## Installation
 
 1. Find this module on your Directus Marketplace and install it.
-2. If Api Viewer Module is installed, disable it first.
+2. If Api Viewer Module is installed, disable it.
 3. Go to Settings -> Project Settings, in the Modules section, enable module Rapidocus.
 4. Reload the page.
 5. Go to Rapidocus in left menu.
