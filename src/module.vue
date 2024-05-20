@@ -18,8 +18,8 @@ var timer;
 // General
 const display_mode = useLocalStorage("rapidocus_display_mode", "focused");
 const display_modes = isMobile.value
-  ? ref(["view!!", "focused"])
-  : ref(["view&&", "read", "focused"]);
+  ? ref(["view", "focused"])
+  : ref(["view", "read", "focused"]);
 const allow_try = useLocalStorage("rapidocus_allow_try", true);
 //
 
@@ -72,7 +72,6 @@ onMounted(async () => {
     rapidoc.value.loadSpec(url.value);
   }, 50);
   var value = localStorage.getItem(key);
-  console.log("navigator.userAgent:", navigator.userAgent);
   if (!value) {
     localStorage.setItem(key, JSON.stringify([url.value]));
   }

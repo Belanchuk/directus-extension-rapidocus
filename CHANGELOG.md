@@ -1,3 +1,7 @@
+### 1.3.5
+
+Removed console.logs
+
 ### 1.3.4
 
 Disabled read mode for mobile
