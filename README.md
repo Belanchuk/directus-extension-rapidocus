@@ -45,6 +45,7 @@ View any OpenAPI Specification in your Directus and customize the appearance.
 2. No need to add an access_token.
 3. Sandbox enabled, doesn't request scopes.
 4. Incompatible with the Api Viewer Module.
+5. If during local development you have a duplicate link to the server, then set the Directus variable to PUBLIC_URL=http://localhost:8055. Correct the link if necessary.
 
 ## Shoutout
 
