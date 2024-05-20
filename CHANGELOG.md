@@ -1,3 +1,8 @@
+### 1.3.8
+
+Some changed README.md
+Added dependency
+
 ### 1.3.7
 
 Added Spec loading when press enter

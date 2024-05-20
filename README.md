@@ -21,8 +21,9 @@ View any OpenAPI Specification in your Directus and customize the appearance.
 - Persist auth: true | **false**\*
 - Allow search: **true**\* | false
 - Allow advanced search: **true**\* | false
-- Font spacing: compact | **default**\* | relaxed
+- Item spacing: compact | **default**\* | relaxed
 - Font size: **default**\* | large | largest
+- Use path in navbar: true | **false**\*
 
 \* default value
 
