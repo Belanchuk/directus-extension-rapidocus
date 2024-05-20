@@ -1,3 +1,7 @@
+### 1.3.6
+
+Set on mobile view mode by default
+
 ### 1.3.5
 
 Removed console.logs

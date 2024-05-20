@@ -16,7 +16,9 @@ const urls = useLocalStorage("rapidocus_api_urls", url.value);
 var timer;
 
 // General
-const display_mode = useLocalStorage("rapidocus_display_mode", "focused");
+const display_mode = isMobile.value
+  ? useLocalStorage("rapidocus_display_mode", "view")
+  : useLocalStorage("rapidocus_display_mode", "focused");
 const display_modes = isMobile.value
   ? ref(["view", "focused"])
   : ref(["view", "read", "focused"]);
