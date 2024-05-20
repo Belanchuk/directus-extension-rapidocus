@@ -1,3 +1,11 @@
+### 1.3.4
+
+Disabled read mode for mobile
+
+### 1.3.3
+
+Renamed index.js
+
 ### 1.3.2
 
 Added use_path_in_nav_bar setting
