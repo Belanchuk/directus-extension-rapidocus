@@ -18,7 +18,7 @@
   "directus:extension": {
     "type": "module",
     "path": "dist/index.js",
-    "source": "src/index.js",
+    "source": "src/index.ts",
     "host": "^10.10.0",
     "sandbox": {
       "enabled": true,
