@@ -1,3 +1,7 @@
+### 1.3.7
+
+Added Spec loading when press enter
+
 ### 1.3.6
 
 Set on mobile view mode by default

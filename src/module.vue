@@ -79,8 +79,8 @@ onMounted(async () => {
   }
 });
 
-const loadSpec = async () => {
-  await rapidoc.value.loadSpec(url.value);
+const loadSpec = () => {
+  rapidoc.value.loadSpec(url.value);
   var old_value = localStorage.getItem(key);
   const new_value = JSON.parse(old_value);
   if (!new_value.includes(url.value)) {
@@ -91,6 +91,7 @@ const loadSpec = async () => {
 
 const setUrl = (args) => {
   url.value = args.target.textContent;
+  loadSpec();
 };
 
 const removeUrl = (args) => {
@@ -173,6 +174,7 @@ const colors = computed(() => {
             v-model="url"
             placeholder="Paste OpenAPI Spec url in json or yaml format."
             small
+            @keyup.enter="loadSpec"
           />
         </template>
         <v-list>
