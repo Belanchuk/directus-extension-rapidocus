@@ -73,19 +73,17 @@ onMounted(async () => {
   timer = setTimeout(() => {
     rapidoc.value.loadSpec(url.value);
   }, 50);
-  var value = localStorage.getItem(key);
-  if (!value) {
+  if (!localStorage.getItem(key)) {
     localStorage.setItem(key, JSON.stringify([url.value]));
   }
 });
 
 const loadSpec = () => {
   rapidoc.value.loadSpec(url.value);
-  var old_value = localStorage.getItem(key);
-  const new_value = JSON.parse(old_value);
-  if (!new_value.includes(url.value)) {
-    new_value.push(url.value);
-    localStorage.setItem(key, JSON.stringify(new_value));
+  const value = JSON.parse(localStorage.getItem(key));
+  if (!value.includes(url.value)) {
+    value.push(url.value);
+    localStorage.setItem(key, JSON.stringify(value));
   }
 };
 
