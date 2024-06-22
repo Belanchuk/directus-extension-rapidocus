@@ -1,3 +1,7 @@
+### 1.4.0
+
+Added Authorization Bearer header separately for each OpenAPI url
+
 ### 1.3.9
 
 Some changed README.md
