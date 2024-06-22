@@ -9,23 +9,35 @@ const isMobile = computed(() => {
   return regex.test(navigator.userAgent);
 });
 
+// Initialization
 const rapidoc = ref(null);
-const key = "rapidocus_api_urls";
-const url = ref(`${location.origin}/server/specs/oas`);
-const urls = useLocalStorage("rapidocus_api_urls", url.value);
+const { fetch: originalFetch } = window;
 var timer;
 
-// General
+// General settings
 const display_mode = isMobile.value
   ? useLocalStorage("rapidocus_display_mode", "view")
   : useLocalStorage("rapidocus_display_mode", "focused");
 const display_modes = isMobile.value
   ? ref(["view", "focused"])
   : ref(["view", "read", "focused"]);
-const allow_try = useLocalStorage("rapidocus_allow_try", true);
-//
 
-// Navigation
+// Auth settings
+const auth = ref("");
+const url = useLocalStorage(
+  "rapidocus_url_default",
+  `${location.origin}/server/specs/oas`
+);
+const urls_key = "rapidocus_api_urls";
+const urls = useLocalStorage(urls_key, `{${url.value}:"${auth.value}"}`);
+const allow_try = useLocalStorage("rapidocus_allow_try", true);
+const allow_authentication = useLocalStorage(
+  "rapidocus_allow_authentication",
+  false
+);
+const persist_auth = useLocalStorage("rapidocus_persist_auth", false);
+
+// Navigation settings
 const allow_search = useLocalStorage("rapidocus_allow_search", true);
 const allow_advanced_search = useLocalStorage(
   "rapidocus_allow_advanced_search",
@@ -36,11 +48,6 @@ const allow_server_selection = useLocalStorage(
   "rapidocus_allow_server_selection",
   false
 );
-const allow_authentication = useLocalStorage(
-  "rapidocus_allow_authentication",
-  false
-);
-const persist_auth = useLocalStorage("rapidocus_persist_auth", false);
 const item_spacing = useLocalStorage("rapidocus_item_spacing", "default");
 const item_spacings = ref(["compact", "default", "relaxed"]);
 const font_size = useLocalStorage("rapidocus_font_size", "default");
@@ -69,38 +76,71 @@ const show_methods_in_nav_bar = ref([
 //
 
 onMounted(async () => {
+  window.fetch = async (...args) => {
+    const value = JSON.parse(localStorage.getItem(urls_key));
+    auth.value = value[url.value];
+    if (!auth.value) return originalFetch(...args);
+    let [resource, options] = args;
+    options.headers["Authorization"] = `Bearer ${auth.value}`;
+    const response = await originalFetch(resource, options);
+    return response;
+  };
+
   clearTimeout(timer);
   timer = setTimeout(() => {
-    rapidoc.value.loadSpec(url.value);
-  }, 50);
-  if (!localStorage.getItem(key)) {
-    localStorage.setItem(key, JSON.stringify([url.value]));
-  }
+    loadSpec();
+  }, 250);
 });
-
-const loadSpec = () => {
-  rapidoc.value.loadSpec(url.value);
-  const value = JSON.parse(localStorage.getItem(key));
-  if (!value.includes(url.value)) {
-    value.push(url.value);
-    localStorage.setItem(key, JSON.stringify(value));
-  }
-};
 
 const setUrl = (args) => {
   url.value = args.target.textContent;
   loadSpec();
 };
 
+const changeAuth = () => {
+  const value = JSON.parse(localStorage.getItem(urls_key));
+  auth.value = value[url.value];
+  loadSpec();
+};
+
+const setAuth = () => {
+  const value = JSON.parse(localStorage.getItem(urls_key));
+  value[url.value] = auth.value;
+  localStorage.setItem(urls_key, JSON.stringify(value));
+  loadSpec();
+};
+
+const loadSpec = () => {
+  updateUrls();
+  rapidoc.value.loadSpec(url.value);
+};
+
+const updateUrls = () => {
+  const value = JSON.parse(localStorage.getItem(urls_key));
+  if (!value) {
+    localStorage.setItem(urls_key, JSON.stringify({ [url.value]: auth.value }));
+  } else if (!Object.keys(value).includes(url.value)) {
+    value[url.value] = "";
+    urls.value = JSON.stringify(value);
+    localStorage.setItem(urls_key, JSON.stringify(value));
+  } else {
+    auth.value = value[url.value];
+  }
+};
+
 const removeUrl = (args) => {
-  const value = JSON.parse(localStorage.getItem(key));
-  const new_value = value.filter(
-    (url) =>
+  const value = JSON.parse(localStorage.getItem(urls_key));
+  const new_value = {};
+  for (let url in value) {
+    if (
       url !==
       args.target.parentElement.parentElement.previousSibling.textContent
-  );
+    ) {
+      new_value[url] = value[url];
+    }
+  }
   urls.value = JSON.stringify(new_value);
-  localStorage.setItem(key, JSON.stringify(new_value));
+  localStorage.setItem(urls_key, JSON.stringify(new_value));
 };
 
 const colorScheme = window.matchMedia("(prefers-color-scheme: dark)");
@@ -176,7 +216,7 @@ const colors = computed(() => {
           />
         </template>
         <v-list>
-          <template v-for="url in urls" :key="index">
+          <template v-for="(key, url) in urls" :key="key">
             <v-list-item clickable @click="setUrl">
               <v-list-item-content>{{ url }}</v-list-item-content>
               <v-list-item-icon @click.stop="removeUrl">
@@ -230,6 +270,53 @@ const colors = computed(() => {
           ></v-icon>
         </div>
       </sidebar-detail>
+
+      <sidebar-detail icon="settings" title="Auth settings">
+        <div class="pb20">
+          <div class="flex">
+            <div class="type-label">Api urls</div>
+          </div>
+          <v-select
+            v-model="url"
+            :items="Object.keys(urls)"
+            @update:model-value="changeAuth"
+          />
+        </div>
+
+        <div class="pb20">
+          <div class="flex">
+            <div class="type-label">Authorization: Bearer token</div>
+          </div>
+          <v-input
+            v-model="auth"
+            placeholder="Paste only token"
+            @keyup.enter="setAuth"
+          ></v-input>
+        </div>
+
+        <div class="flex center">
+          <v-checkbox v-model="allow_authentication"
+            >Rapidoc allow authentication</v-checkbox
+          >
+          <v-icon
+            class="small pl5"
+            name="help"
+            v-tooltip.left="
+              `Authentication feature, allows the user to select one of the authentication mechanism thats available in the spec. It can be http-basic, http-bearer or api-key.`
+            "
+          ></v-icon>
+        </div>
+
+        <div class="flex center">
+          <v-checkbox v-model="persist_auth">Rapidoc persist auth</v-checkbox>
+          <v-icon
+            class="small pl5"
+            name="help"
+            v-tooltip.left="`Authentication will be persisted to localStorage.`"
+          ></v-icon>
+        </div>
+      </sidebar-detail>
+
       <sidebar-detail icon="left_panel_close" title="Navigation">
         <div class="layout-options">
           <div class="pb20">
@@ -320,30 +407,6 @@ const colors = computed(() => {
               name="help"
               v-tooltip.left="
                 `If set to 'false', user will not be able to see or select API server (Server List will be hidden, however users will be able to see the server url near the 'TRY' button, to know in advance where the TRY will send the request). The first server in the API specification file will be used.`
-              "
-            ></v-icon>
-          </div>
-
-          <div class="flex center">
-            <v-checkbox v-model="allow_authentication"
-              >Allow authentication</v-checkbox
-            >
-            <v-icon
-              class="small pl5"
-              name="help"
-              v-tooltip.left="
-                `Authentication feature, allows the user to select one of the authentication mechanism thats available in the spec. It can be http-basic, http-bearer or api-key.`
-              "
-            ></v-icon>
-          </div>
-
-          <div class="flex center">
-            <v-checkbox v-model="persist_auth">Persist auth</v-checkbox>
-            <v-icon
-              class="small pl5"
-              name="help"
-              v-tooltip.left="
-                `Authentication will be persisted to localStorage.`
               "
             ></v-icon>
           </div>
