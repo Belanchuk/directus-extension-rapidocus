@@ -3,7 +3,10 @@
   "description": "View any OpenAPI Specification in your Directus and customize the appearance.",
   "author": "Pavel Belanchuk",
   "icon": "temp_preferences_eco",
-  "repository": "https://github.com/Belanchuk/directus-extension-rapidocus",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Belanchuk/directus-extension-rapidocus.git"
+  },
   "version": "1.4.0",
   "keywords": [
     "openapi",
