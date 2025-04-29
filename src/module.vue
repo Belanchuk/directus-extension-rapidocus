@@ -81,6 +81,10 @@ onMounted(async () => {
     auth.value = value[url.value];
     if (!auth.value) return originalFetch(...args);
     let [resource, options] = args;
+    options.headers = options.headers || {};
+    if (typeof options.headers === "string") {
+      options.headers = JSON.parse(options.headers);
+    }
     options.headers["Authorization"] = `Bearer ${auth.value}`;
     const response = await originalFetch(resource, options);
     return response;
