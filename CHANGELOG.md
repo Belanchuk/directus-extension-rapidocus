@@ -1,3 +1,6 @@
+### 1.4.2
+Fix issue with options.headers for cors
+
 ### 1.4.0
 
 Added Authorization Bearer header separately for each OpenAPI url
